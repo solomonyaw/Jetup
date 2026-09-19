@@ -1,0 +1,36 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 170" width="1200" height="340">
+  <defs>
+    <linearGradient id="cometGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="50%" stop-color="#c026d3" />
+      <stop offset="100%" stop-color="#f472b6" />
+    </linearGradient>
+    <linearGradient id="jetupTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="65%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#db2777" />
+    </linearGradient>
+  </defs>
+
+  <!-- Comet Icon (Circle head with diagonal streak lines angled down-left) -->
+  <g transform="translate(15, 10)">
+    <!-- Head Circle -->
+    <circle cx="110" cy="55" r="34" fill="url(#cometGrad)" />
+    
+    <!-- Streaks / speed lines angled at 45 degrees -->
+    <!-- Streak 1: top -->
+    <rect x="52" y="32" width="58" height="14" rx="7" transform="rotate(-45 52 32)" fill="url(#cometGrad)" />
+    <!-- Streak 2: mid-long -->
+    <rect x="36" y="66" width="94" height="15" rx="7.5" transform="rotate(-45 36 66)" fill="url(#cometGrad)" />
+    <!-- Streak 3: mid-dot -->
+    <circle cx="28" cy="88" r="7" fill="url(#cometGrad)" />
+    <!-- Streak 4: bottom-long -->
+    <rect x="25" y="112" width="76" height="14" rx="7" transform="rotate(-45 25 112)" fill="url(#cometGrad)" />
+  </g>
+
+  <!-- JetUP Typography (Italicized bold aerodynamic lettering) -->
+  <text x="185" y="105" font-family="'Space Grotesk', 'Plus Jakarta Sans', sans-serif" font-weight="800" font-style="italic" font-size="78" fill="url(#jetupTextGrad)" letter-spacing="-1">
+    Jet<tspan fill="#7c3aed">UP</tspan>
+  </text>
+</svg>

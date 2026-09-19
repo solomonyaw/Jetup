@@ -170,9 +170,45 @@ let faqSearchQuery = '';
 let openFaqIds = new Set(['faq-1', 'faq-10', 'faq-12']);
 
 // --------------------------------------------------------------------------
-// DOM Initialization
+// Global Mobile Drawer Controller (Accessible to inline handlers & JS modules)
 // --------------------------------------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
+export function toggleMobileDrawer(forceState) {
+  const toggleBtn = document.getElementById('hamburger-toggle-btn');
+  const backdrop = document.getElementById('mobile-drawer-backdrop');
+  const iconBars = document.getElementById('hamburger-icon-bars');
+  const iconClose = document.getElementById('hamburger-icon-close');
+
+  if (!backdrop || !toggleBtn) return;
+
+  const willOpen = (forceState !== undefined) ? forceState : !backdrop.classList.contains('active');
+
+  if (willOpen) {
+    backdrop.classList.add('active');
+    backdrop.setAttribute('aria-hidden', 'false');
+    toggleBtn.classList.add('is-active');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    if (iconBars) iconBars.style.display = 'none';
+    if (iconClose) iconClose.style.display = 'block';
+  } else {
+    backdrop.classList.remove('active');
+    backdrop.setAttribute('aria-hidden', 'true');
+    toggleBtn.classList.remove('is-active');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    if (iconBars) iconBars.style.display = 'block';
+    if (iconClose) iconClose.style.display = 'none';
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.toggleMobileDrawer = toggleMobileDrawer;
+}
+
+// --------------------------------------------------------------------------
+// DOM Initialization (Resilient to execution timing in modules)
+// --------------------------------------------------------------------------
+function initAll() {
   initNavbar();
   initHamburgerMenu();
   initCopyButtons();
@@ -182,7 +218,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initFaqSection();
   initScrollLinks();
   initTagMarketsButton();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAll);
+} else {
+  initAll();
+}
 
 // --------------------------------------------------------------------------
 // 1. Navbar & Sticky Header
@@ -207,65 +249,21 @@ function initHamburgerMenu() {
   const toggleBtn = document.getElementById('hamburger-toggle-btn');
   const backdrop = document.getElementById('mobile-drawer-backdrop');
   const drawerContent = document.getElementById('mobile-drawer-content');
-  const iconBars = document.getElementById('hamburger-icon-bars');
-  const iconClose = document.getElementById('hamburger-icon-close');
   const mobileLinks = document.querySelectorAll('.mobile-menu-link, .mobile-menu-cta, #mobile-drawer-content a');
 
   if (!toggleBtn || !backdrop) return;
-
-  function updatePosition() {
-    const navbar = document.getElementById('main-navbar');
-    if (navbar && backdrop) {
-      const bottom = navbar.getBoundingClientRect().bottom;
-      const topOffset = Math.max(0, Math.round(bottom));
-      backdrop.style.top = `${topOffset}px`;
-      backdrop.style.height = `${window.innerHeight - topOffset}px`;
-    }
-  }
-
-  function setDrawerOpen(isOpen) {
-    toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    if (isOpen) {
-      updatePosition();
-      backdrop.classList.add('active');
-      toggleBtn.classList.add('is-active');
-      document.body.style.overflow = 'hidden';
-      if (iconBars) iconBars.style.display = 'none';
-      if (iconClose) iconClose.style.display = 'block';
-    } else {
-      backdrop.classList.remove('active');
-      toggleBtn.classList.remove('is-active');
-      document.body.style.overflow = '';
-      if (iconBars) iconBars.style.display = 'block';
-      if (iconClose) iconClose.style.display = 'none';
-    }
-  }
 
   // Toggle button click: opens (dropdown) or closes (dropup)
   toggleBtn.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const isCurrentlyOpen = backdrop.classList.contains('active');
-    setDrawerOpen(!isCurrentlyOpen);
+    toggleMobileDrawer();
   });
 
   // Close when clicking directly on backdrop overlay outside menu content
   backdrop.addEventListener('click', (e) => {
     if (drawerContent && !drawerContent.contains(e.target)) {
-      setDrawerOpen(false);
-    }
-  });
-
-  // Close when clicking outside anywhere on document
-  document.addEventListener('click', (e) => {
-    if (backdrop.classList.contains('active')) {
-      if (
-        drawerContent &&
-        !drawerContent.contains(e.target) &&
-        !toggleBtn.contains(e.target)
-      ) {
-        setDrawerOpen(false);
-      }
+      toggleMobileDrawer(false);
     }
   });
 
@@ -273,7 +271,7 @@ function initHamburgerMenu() {
   mobileLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
-      setDrawerOpen(false);
+      toggleMobileDrawer(false);
       if (href && href.startsWith('#') && href.length > 1) {
         e.preventDefault();
         const targetId = href.substring(1);
@@ -281,7 +279,7 @@ function initHamburgerMenu() {
         if (targetElem) {
           setTimeout(() => {
             targetElem.scrollIntoView({ behavior: 'smooth' });
-          }, 120);
+          }, 80);
         }
       }
     });
@@ -290,24 +288,14 @@ function initHamburgerMenu() {
   // Close on Escape key press
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && backdrop.classList.contains('active')) {
-      setDrawerOpen(false);
+      toggleMobileDrawer(false);
     }
   });
 
-  // Auto-close on resize to desktop view and sync top position
+  // Auto-close on resize to desktop view
   window.addEventListener('resize', () => {
-    if (window.innerWidth >= 1200) {
-      if (backdrop.classList.contains('active')) {
-        setDrawerOpen(false);
-      }
-    } else if (backdrop.classList.contains('active')) {
-      updatePosition();
-    }
-  }, { passive: true });
-
-  window.addEventListener('scroll', () => {
-    if (backdrop.classList.contains('active')) {
-      updatePosition();
+    if (window.innerWidth >= 1200 && backdrop.classList.contains('active')) {
+      toggleMobileDrawer(false);
     }
   }, { passive: true });
 }

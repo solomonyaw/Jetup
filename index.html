@@ -11,6 +11,33 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./style.css" />
+  <script>
+    window.toggleMobileDrawer = function(force) {
+      var backdrop = document.getElementById('mobile-drawer-backdrop');
+      var btn = document.getElementById('hamburger-toggle-btn');
+      var bars = document.getElementById('hamburger-icon-bars');
+      var close = document.getElementById('hamburger-icon-close');
+      if (!backdrop || !btn) return;
+      var open = (force !== undefined) ? force : !backdrop.classList.contains('active');
+      if (open) {
+        backdrop.classList.add('active');
+        backdrop.setAttribute('aria-hidden', 'false');
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+        if (bars) bars.style.display = 'none';
+        if (close) close.style.display = 'block';
+      } else {
+        backdrop.classList.remove('active');
+        backdrop.setAttribute('aria-hidden', 'true');
+        btn.classList.remove('is-active');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+        if (bars) bars.style.display = 'block';
+        if (close) close.style.display = 'none';
+      }
+    };
+  </script>
 </head>
 <body>
 
@@ -31,28 +58,15 @@
         <!-- Brand Group -->
         <div class="nav-brand-group">
           <!-- JetUP Logo -->
-          <a href="#" class="brand-logo" aria-label="JetUP Home">
-            <svg height="28" viewBox="0 0 160 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 28L22 6L26 14L18 30L12 28Z" fill="url(#jetup-grad-1)"/>
-              <path d="M20 18L28 4L32 10L24 24L20 18Z" fill="url(#jetup-grad-2)"/>
-              <text x="38" y="25" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="22" font-style="italic" fill="#0f172a">JET<tspan fill="#7c3aed">UP</tspan></text>
-              <defs>
-                <linearGradient id="jetup-grad-1" x1="12" y1="6" x2="26" y2="30" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#7c3aed"/>
-                  <stop offset="1" stop-color="#db2777"/>
-                </linearGradient>
-                <linearGradient id="jetup-grad-2" x1="20" y1="4" x2="32" y2="24" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#ec4899"/>
-                  <stop offset="1" stop-color="#f59e0b"/>
-                </linearGradient>
-              </defs>
-            </svg>
+          <a href="#" class="brand-logo" aria-label="JetUP Home" style="display:flex;align-items:center;gap:0.4rem;text-decoration:none;">
+            <img src="/jetup.png" alt="JetUP Official Logo" style="height:32px;width:auto;max-width:140px;object-fit:contain;" />
           </a>
 
           <div class="brand-divider"></div>
 
-          <!-- TAG Markets Connected Badge -->
-          <div class="brand-connected-badge">
+          <!-- TAG Markets Connected Badge with official logo -->
+          <div class="brand-connected-badge" style="display:inline-flex;align-items:center;gap:0.45rem;">
+            <img src="/tag.png" alt="TAG Markets Logo" style="height:18px;width:auto;object-fit:contain;border-radius:2px;" />
             <span class="pulse-dot"></span>
             <span>TAG Markets Connected</span>
           </div>
@@ -95,7 +109,7 @@
           </a>
 
           <!-- Hamburger Toggle Button -->
-          <button id="hamburger-toggle-btn" class="hamburger-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+          <button id="hamburger-toggle-btn" class="hamburger-toggle" aria-label="Toggle mobile menu" aria-expanded="false" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer()">
             <svg id="hamburger-icon-bars" class="icon-inline" style="width:22px;height:22px;" viewBox="0 0 24 24">
               <line x1="4" x2="20" y1="12" y2="12"></line>
               <line x1="4" x2="20" y1="6" y2="6"></line>
@@ -113,72 +127,76 @@
   </header>
 
   <!-- Mobile Navigation Drawer & Backdrop -->
-  <div id="mobile-drawer-backdrop" aria-hidden="true">
+  <div id="mobile-drawer-backdrop" aria-hidden="true" onclick="if(event.target === this) { window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false); }">
     <div id="mobile-drawer-content" role="dialog" aria-modal="true" aria-label="Mobile navigation">
       <div class="mobile-menu-header">
-        <span style="font-size:0.75rem;font-weight:700;text-transform:uppercase;color:#64748b;letter-spacing:0.05em;">Menu Navigation</span>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <img src="/jetup.png" alt="JetUP" style="height:26px;width:auto;object-fit:contain;" />
+          <span style="font-size:0.75rem;color:#cbd5e1;font-weight:bold;">&times;</span>
+          <img src="/tag.png" alt="TAG Markets" style="height:18px;width:auto;object-fit:contain;border-radius:2px;" />
+        </div>
         <span style="font-size:0.75rem;color:#059669;font-weight:700;display:flex;align-items:center;gap:0.25rem;">
           <span class="pulse-dot"></span> Live Portal
         </span>
       </div>
       <div class="mobile-menu-links">
-        <a href="#overview" class="mobile-menu-link">
+        <a href="#overview" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>Overview &amp; Entity Roles</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#ecosystem-works" class="mobile-menu-link">
+        <a href="#ecosystem-works" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>How Ecosystem Works</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#tag-markets" class="mobile-menu-link">
+        <a href="#tag-markets" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>About TAG Markets</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#sonic-ai" class="mobile-menu-link">
+        <a href="#sonic-ai" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>Sonic AI on CopyX</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#videos" class="mobile-menu-link">
+        <a href="#videos" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>Video Guides &amp; YouTube</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#setup-guide" class="mobile-menu-link">
+        <a href="#setup-guide" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>Account Setup Guide (Steps 1-3)</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#community-tokens" class="mobile-menu-link">
+        <a href="#community-tokens" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>Community Tokens (#9M &amp; 9MPromo)</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#workflow" class="mobile-menu-link">
+        <a href="#workflow" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>Complete CopyX Workflow</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#bonus" class="mobile-menu-link">
+        <a href="#bonus" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>$100 Trading Bonus Promotion</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#calculator" class="mobile-menu-link">
+        <a href="#calculator" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>Financial Planning Calculator</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#faq" class="mobile-menu-link">
+        <a href="#faq" class="mobile-menu-link" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>Frequently Asked Questions</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
-        <a href="#risks" class="mobile-menu-link" style="color:#e11d48;">
+        <a href="#risks" class="mobile-menu-link" style="color:#e11d48;" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>Risk Disclosures &amp; Capital Warnings</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </a>
       </div>
       <div class="mobile-menu-footer" style="display:flex;flex-direction:column;gap:0.5rem;">
-        <a href="https://www.youtube.com/@JetUP_official" target="_blank" rel="noopener noreferrer" class="btn-youtube mobile-menu-link" style="justify-content:center;">
+        <a href="https://www.youtube.com/@JetUP_official" target="_blank" rel="noopener noreferrer" class="btn-youtube mobile-menu-link" style="justify-content:center;" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
           </svg>
           <span>OFFICIAL YOUTUBE CHANNEL</span>
         </a>
-        <a href="https://jetup.ibportal.io/auth/register?e=XiJ1iKWbRG_yO4W1EtstHQcCtTOvJ29__yCIWfHvO6s&a=1" target="_blank" rel="noopener noreferrer" class="btn-primary-gradient mobile-menu-cta">
+        <a href="https://jetup.ibportal.io/auth/register?e=XiJ1iKWbRG_yO4W1EtstHQcCtTOvJ29__yCIWfHvO6s&a=1" target="_blank" rel="noopener noreferrer" class="btn-primary-gradient mobile-menu-cta" onclick="window.toggleMobileDrawer &amp;&amp; window.toggleMobileDrawer(false)">
           <span>REGISTER ON JETUP / TAG MARKETS</span>
           <svg class="icon-inline" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
         </a>
@@ -197,9 +215,16 @@
           
           <!-- Left Col: Copy & Actions -->
           <div>
-            <div class="section-badge section-badge-dark">
-              <span class="pulse-dot"></span>
-              <span>Digital Financial Ecosystem &amp; Copy Trading Guide</span>
+            <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;margin-bottom:1rem;">
+              <div class="section-badge section-badge-dark" style="margin-bottom:0;">
+                <span class="pulse-dot"></span>
+                <span>Digital Financial Ecosystem &amp; Copy Trading Guide</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:0.6rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.65rem;border-radius:9999px;">
+                <img src="/jetup-dark.png" alt="JetUP" style="height:18px;width:auto;object-fit:contain;" />
+                <span style="color:#64748b;font-size:0.7rem;font-weight:bold;">&amp;</span>
+                <img src="/tag.png" alt="TAG Markets" style="height:15px;width:auto;object-fit:contain;background:#ffffff;border-radius:2px;padding:1px 3px;" />
+              </div>
             </div>
 
             <h1 class="hero-headline">
@@ -275,7 +300,10 @@
                 <div style="display:flex;align-items:center;gap:0.75rem;">
                   <div style="width:36px;height:36px;border-radius:8px;background:rgba(147,51,234,0.25);color:#c084fc;display:flex;align-items:center;justify-content:center;font-weight:800;">1</div>
                   <div>
-                    <div style="font-size:0.875rem;font-weight:700;color:#ffffff;">Investor / JetUP Community</div>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                      <span style="font-size:0.875rem;font-weight:700;color:#ffffff;">JetUP Community</span>
+                      <img src="/jetup-dark.png" alt="JetUP Logo" style="height:14px;width:auto;object-fit:contain;" />
+                    </div>
                     <div style="font-size:0.75rem;color:#94a3b8;">Upline registration &amp; community authorization</div>
                   </div>
                 </div>
@@ -289,7 +317,10 @@
                 <div style="display:flex;align-items:center;gap:0.75rem;">
                   <div style="width:36px;height:36px;border-radius:8px;background:rgba(14,165,233,0.25);color:#38bdf8;display:flex;align-items:center;justify-content:center;font-weight:800;">2</div>
                   <div>
-                    <div style="font-size:0.875rem;font-weight:700;color:#ffffff;">TAG Markets (Brokerage)</div>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                      <span style="font-size:0.875rem;font-weight:700;color:#ffffff;">TAG Markets (Brokerage)</span>
+                      <img src="/tag.png" alt="TAG Markets" style="height:14px;width:auto;object-fit:contain;background:#ffffff;border-radius:2px;padding:1px 2px;" />
+                    </div>
                     <div style="font-size:0.75rem;color:#94a3b8;">Segregated custody &amp; liquidity execution</div>
                   </div>
                 </div>
@@ -419,8 +450,11 @@
           <!-- CARD 1: JETUP -->
           <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:1.75rem;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;justify-content:space-between;">
             <div>
-              <div style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:#f3e8ff;color:#7c3aed;margin-bottom:1rem;">
-                <svg class="icon-inline" style="width:22px;height:22px;" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+                <div style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:#f3e8ff;color:#7c3aed;">
+                  <svg class="icon-inline" style="width:22px;height:22px;" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <img src="/jetup.png" alt="JetUP Official Logo" style="height:26px;width:auto;max-width:110px;object-fit:contain;" />
               </div>
               <span style="font-size:0.75rem;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:0.05em;">Pillar 01</span>
               <h3 style="font-size:1.25rem;font-weight:800;color:#0f172a;margin-top:0.25rem;margin-bottom:0.75rem;">JetUP</h3>
@@ -436,8 +470,11 @@
           <!-- CARD 2: TAG MARKETS -->
           <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:1.75rem;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;justify-content:space-between;">
             <div>
-              <div style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:#e0f2fe;color:#0284c7;margin-bottom:1rem;">
-                <svg class="icon-inline" style="width:22px;height:22px;" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+                <div style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:#e0f2fe;color:#0284c7;">
+                  <svg class="icon-inline" style="width:22px;height:22px;" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+                </div>
+                <img src="/tag.png" alt="TAG Markets Official Logo" style="height:24px;width:auto;max-width:90px;object-fit:contain;border-radius:3px;" />
               </div>
               <span style="font-size:0.75rem;font-weight:700;color:#0284c7;text-transform:uppercase;letter-spacing:0.05em;">Pillar 02</span>
               <h3 style="font-size:1.25rem;font-weight:800;color:#0f172a;margin-top:0.25rem;margin-bottom:0.75rem;">TAG Markets</h3>
@@ -495,8 +532,13 @@
         
         <div style="background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%);border-radius:24px;padding:2.5rem;color:#ffffff;box-shadow:var(--shadow-lg);">
           <div style="max-width:820px;">
-            <div style="display:inline-flex;align-items:center;gap:0.4rem;background:rgba(2,132,199,0.25);color:#38bdf8;padding:0.3rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:700;border:1px solid rgba(56,189,248,0.3);margin-bottom:1rem;">
-              <span>Brokerage Partner</span>
+            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+              <div style="background:#ffffff;padding:0.35rem 0.75rem;border-radius:10px;display:inline-flex;align-items:center;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
+                <img src="/tag.png" alt="TAG Markets Official Logo" style="height:28px;width:auto;object-fit:contain;" />
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:0.4rem;background:rgba(2,132,199,0.25);color:#38bdf8;padding:0.3rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:700;border:1px solid rgba(56,189,248,0.3);">
+                <span>Regulated Brokerage Partner</span>
+              </div>
             </div>
             <h2 style="font-size:2rem;font-weight:900;color:#ffffff;line-height:1.2;margin-bottom:1rem;">
               About TAG Markets
@@ -1717,10 +1759,14 @@
       <div class="footer-grid">
         
         <div>
-          <div style="font-family:'Space Grotesk', sans-serif;font-size:1.25rem;font-weight:800;font-style:italic;color:#ffffff;">
-            JET<span style="color:#7c3aed;">UP</span> <span style="font-size:0.8rem;font-style:normal;color:#94a3b8;">GUIDE</span>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+            <img src="/jetup-dark.png" alt="JetUP Logo" style="height:26px;width:auto;object-fit:contain;" />
+            <span style="color:#64748b;font-size:0.875rem;">+</span>
+            <div style="background:#ffffff;padding:2px 6px;border-radius:4px;display:inline-flex;">
+              <img src="/tag.png" alt="TAG Markets Logo" style="height:18px;width:auto;object-fit:contain;" />
+            </div>
           </div>
-          <p style="font-size:0.75rem;color:#94a3b8;margin-top:0.75rem;line-height:1.6;">
+          <p style="font-size:0.75rem;color:#94a3b8;margin-top:0.5rem;line-height:1.6;">
             Digital financial ecosystem guide connecting users with trading infrastructure, copy trading, Sonic AI, and partner referral programs.
           </p>
           <div style="margin-top:1rem;display:flex;align-items:center;gap:0.75rem;">

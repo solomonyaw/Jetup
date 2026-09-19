@@ -1,0 +1,12 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="800" height="480">
+  <g fill="#0f172a">
+    <!-- Stylized 'T' -->
+    <path d="M 45 60 L 130 60 L 130 84 L 88 84 L 62 120 L 105 120 L 105 144 L 38 144 L 38 120 L 64 84 L 45 84 Z" />
+    <!-- Stylized 'A' -->
+    <path d="M 145 144 L 175 60 L 225 60 L 255 144 L 222 144 L 213 118 L 187 118 L 178 144 Z M 194 94 L 206 94 L 200 76 Z" />
+    <!-- Stylized 'G' -->
+    <path d="M 270 60 L 355 60 L 355 84 L 302 84 L 302 120 L 332 120 L 332 104 L 355 104 L 355 144 L 270 144 Z" />
+  </g>
+  <text x="200" y="195" font-family="'Plus Jakarta Sans', 'Arial Black', -apple-system, sans-serif" font-weight="900" font-size="34" letter-spacing="12" fill="#0f172a" text-anchor="middle">MARKETS</text>
+</svg>

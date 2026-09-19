@@ -507,42 +507,55 @@ img, svg {
 /* Mobile Drawer Backdrop & Dropdown Container */
 #mobile-drawer-backdrop {
   position: fixed;
-  top: 0;
+  top: 64px;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(2, 6, 23, 0.65);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 990;
+  width: 100vw;
+  height: calc(100vh - 64px);
+  background-color: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.28s ease, visibility 0.28s ease;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #mobile-drawer-backdrop.active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  display: block !important;
 }
 
 #mobile-drawer-content {
   background-color: #ffffff;
   border-bottom: 2px solid var(--slate-200);
-  padding: 1.25rem 1.25rem 2rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-  max-height: calc(100vh - 75px);
+  padding: 1.25rem 1.25rem 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  max-height: calc(100vh - 80px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  transform: translateY(-100%);
+  transform: translateY(-16px);
   opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
 }
 
 #mobile-drawer-backdrop.active #mobile-drawer-content {
-  transform: translateY(0);
-  opacity: 1;
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+@media (max-width: 640px) {
+  #mobile-drawer-backdrop {
+    top: 56px;
+    height: calc(100vh - 56px);
+  }
 }
 
 .mobile-menu-header {
