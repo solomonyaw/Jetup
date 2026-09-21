@@ -1,6 +1,6 @@
 {
   "name": "JetUP Trading & Investment Guide",
-  "description": "Your Guide to JetUP, TAG Markets, CopyX & Sonic AI. Independent educational and account setup resource.",
+  "description": "Comprehensive guide to JetUP, TAG Markets, Sonic AI, and automated forex copy trading. Account setup, compounding calculator, and risk management.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

@@ -1,0 +1,5 @@
+# robots.txt for https://www.jetup.website/
+User-agent: *
+Allow: /
+
+Sitemap: https://www.jetup.website/sitemap.xml
