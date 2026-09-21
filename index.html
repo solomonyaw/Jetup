@@ -13,7 +13,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./style.css" />
   <script>
+    var _lastDrawerToggle = 0;
     window.toggleMobileDrawer = function(force) {
+      var now = Date.now();
+      if (force === undefined && (now - _lastDrawerToggle < 160)) return;
+      _lastDrawerToggle = now;
       var backdrop = document.getElementById('mobile-drawer-backdrop');
       var btn = document.getElementById('hamburger-toggle-btn');
       var bars = document.getElementById('hamburger-icon-bars');
@@ -21,6 +25,13 @@
       if (!backdrop || !btn) return;
       var open = (force !== undefined) ? force : !backdrop.classList.contains('active');
       if (open) {
+        var navbar = document.getElementById('main-navbar');
+        if (navbar) {
+          var rect = navbar.getBoundingClientRect();
+          var bottom = Math.max(0, Math.round(rect.bottom));
+          backdrop.style.top = bottom + 'px';
+          backdrop.style.height = 'calc(100vh - ' + bottom + 'px)';
+        }
         backdrop.classList.add('active');
         backdrop.setAttribute('aria-hidden', 'false');
         btn.classList.add('is-active');
@@ -76,7 +87,7 @@
           <div class="brand-divider"></div>
 
           <!-- TAG Markets Connected Badge with official logo -->
-          <div class="brand-connected-badge" style="display:inline-flex;align-items:center;gap:0.45rem;">
+          <div class="brand-connected-badge">
             <img src="./tag.png" alt="TAG Markets Logo" style="height:18px;width:auto;object-fit:contain;border-radius:2px;" />
             <span class="pulse-dot"></span>
             <span>TAG Markets Connected</span>
@@ -142,9 +153,9 @@
     <div id="mobile-drawer-content" role="dialog" aria-modal="true" aria-label="Mobile navigation">
       <div class="mobile-menu-header">
         <div style="display:flex;align-items:center;gap:0.5rem;">
-          <img src="/jetup.png" alt="JetUP" style="height:26px;width:auto;object-fit:contain;" />
+          <img src="./jetup.png" alt="JetUP" style="height:26px;width:auto;object-fit:contain;" />
           <span style="font-size:0.75rem;color:#cbd5e1;font-weight:bold;">&times;</span>
-          <img src="/tag.png" alt="TAG Markets" style="height:18px;width:auto;object-fit:contain;border-radius:2px;" />
+          <img src="./tag.png" alt="TAG Markets" style="height:18px;width:auto;object-fit:contain;border-radius:2px;" />
         </div>
         <span style="font-size:0.75rem;color:#059669;font-weight:700;display:flex;align-items:center;gap:0.25rem;">
           <span class="pulse-dot"></span> Live Portal
@@ -1023,7 +1034,7 @@
         <div style="display:flex;flex-direction:column;gap:1.5rem;">
           
           <!-- STEP 1 -->
-          <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:2rem;box-shadow:var(--shadow-sm);">
+          <div class="responsive-card-lg" style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:2rem;box-shadow:var(--shadow-sm);">
             <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
               <div>
                 <span style="font-size:0.75rem;font-weight:700;color:#7c3aed;text-transform:uppercase;">Phase 01</span>
@@ -1050,7 +1061,7 @@
           </div>
 
           <!-- STEP 2 -->
-          <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:2rem;box-shadow:var(--shadow-sm);">
+          <div class="responsive-card-lg" style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:2rem;box-shadow:var(--shadow-sm);">
             <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
               <div>
                 <span style="font-size:0.75rem;font-weight:700;color:#0284c7;text-transform:uppercase;">Phase 02</span>
@@ -1071,7 +1082,7 @@
           </div>
 
           <!-- STEP 3 -->
-          <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:2rem;box-shadow:var(--shadow-sm);">
+          <div class="responsive-card-lg" style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:2rem;box-shadow:var(--shadow-sm);">
             <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
               <div>
                 <span style="font-size:0.75rem;font-weight:700;color:#d97706;text-transform:uppercase;">Phase 03</span>
@@ -1394,7 +1405,7 @@
               <label style="font-size:0.75rem;font-weight:700;color:#334155;display:block;margin-bottom:0.4rem;">
                 Quick Capital Presets
               </label>
-              <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:0.4rem;">
+              <div class="calc-presets-grid">
                 <button class="calc-preset-btn active" data-preset-val="250">$250 ($150+$100)</button>
                 <button class="calc-preset-btn" data-preset-val="500">$500 Capital</button>
                 <button class="calc-preset-btn" data-preset-val="1000">$1,000 Capital</button>
@@ -1479,7 +1490,7 @@
                 <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">Projected Ending Balance</span>
                 <span id="calc-out-day-pill" class="font-mono" style="font-size:0.75rem;background:rgba(255,255,255,0.15);padding:0.25rem 0.6rem;border-radius:6px;">Day 60</span>
               </div>
-              <div id="calc-out-ending-balance" class="font-mono" style="font-size:2.5rem;font-weight:900;margin-top:0.35rem;letter-spacing:-0.02em;">$318.06</div>
+              <div id="calc-out-ending-balance" class="font-mono" style="font-size:clamp(1.85rem, 5vw, 2.5rem);font-weight:900;margin-top:0.35rem;letter-spacing:-0.02em;word-break:break-all;">$318.06</div>
               <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:#cbd5e1;margin-top:0.5rem;">
                 <span>Net Estimated Gain:</span>
                 <span id="calc-out-net-gain" class="font-mono" style="color:#34d399;font-weight:800;">+$68.06</span>

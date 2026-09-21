@@ -172,7 +172,13 @@ let openFaqIds = new Set(['faq-1', 'faq-10', 'faq-12']);
 // --------------------------------------------------------------------------
 // Global Mobile Drawer Controller (Accessible to inline handlers & JS modules)
 // --------------------------------------------------------------------------
+let lastDrawerToggleTime = 0;
+
 export function toggleMobileDrawer(forceState) {
+  const now = Date.now();
+  if (forceState === undefined && (now - lastDrawerToggleTime < 160)) return;
+  lastDrawerToggleTime = now;
+
   const toggleBtn = document.getElementById('hamburger-toggle-btn');
   const backdrop = document.getElementById('mobile-drawer-backdrop');
   const iconBars = document.getElementById('hamburger-icon-bars');
@@ -183,6 +189,13 @@ export function toggleMobileDrawer(forceState) {
   const willOpen = (forceState !== undefined) ? forceState : !backdrop.classList.contains('active');
 
   if (willOpen) {
+    const navbar = document.getElementById('main-navbar');
+    if (navbar) {
+      const rect = navbar.getBoundingClientRect();
+      const bottom = Math.max(0, Math.round(rect.bottom));
+      backdrop.style.top = `${bottom}px`;
+      backdrop.style.height = `calc(100vh - ${bottom}px)`;
+    }
     backdrop.classList.add('active');
     backdrop.setAttribute('aria-hidden', 'false');
     toggleBtn.classList.add('is-active');
@@ -292,12 +305,25 @@ function initHamburgerMenu() {
     }
   });
 
-  // Auto-close on resize to desktop view
-  window.addEventListener('resize', () => {
-    if (window.innerWidth >= 1200 && backdrop.classList.contains('active')) {
-      toggleMobileDrawer(false);
+  // Auto-close on resize to desktop view & keep drawer aligned
+  function updatePositionIfActive() {
+    if (backdrop.classList.contains('active')) {
+      if (window.innerWidth >= 1200) {
+        toggleMobileDrawer(false);
+      } else {
+        const navbar = document.getElementById('main-navbar');
+        if (navbar) {
+          const rect = navbar.getBoundingClientRect();
+          const bottom = Math.max(0, Math.round(rect.bottom));
+          backdrop.style.top = `${bottom}px`;
+          backdrop.style.height = `calc(100vh - ${bottom}px)`;
+        }
+      }
     }
-  }, { passive: true });
+  }
+
+  window.addEventListener('resize', updatePositionIfActive, { passive: true });
+  window.addEventListener('scroll', updatePositionIfActive, { passive: true });
 }
 
 // --------------------------------------------------------------------------
